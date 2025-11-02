@@ -1,22 +1,16 @@
 // This code is to practie creating classes,
-// importing, and file architecture
 #include "Message.h"
+#include "ColorSense.h"
 
-// Construct a custom made class instance
-Message greeting("Fadil", "Hello, World");
 void setup() {
   Serial.begin(9600);
   
-  // Print a message using a class printMessage method
-  Serial.print(greeting.getUser());
-  Serial.println(" says:");
-  Serial.println(greeting.getMessage() + "\n");
-  Serial.print("Number of messages is - ");
-  Serial.println(Message::getNumOfMessages());
-  Message farewell("GurtYo", "Catch ya later");
-  Serial.print("Now the number of messages is - ");
-  Serial.print(Message::getNumOfMessages());
-  
+  ColorSense colorOTV;
+  colorOTV.sample();
+  colorOTV.printData();
+  // For now, color values are low
+  // Test for sensitivity with LEDs
+  // Increase intergration time if sensitivity to the LEDs is too low
   
 }
 

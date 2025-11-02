@@ -6,14 +6,17 @@
 
 class Message{
   private:
-    String user_t;
-    String message_t;
+    String user;
+    String message;
     static int numOfMessages;
   public:
     Message(String user, String message);
     String getMessage();
     String getUser();
+    void setMessage(String newMessage);
+    void setUser(String newUser);
     static int getNumOfMessages();
+    void serialPrintMessage();
 };
 
 // If you are compiling this in a non-Arduino environment and need to keep it in a single header
