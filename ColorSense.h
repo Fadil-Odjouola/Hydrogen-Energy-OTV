@@ -14,6 +14,7 @@ class ColorSense{
     ColorSense();
     void start();
     void sample();
+    String color();
     void printData();
 };
 

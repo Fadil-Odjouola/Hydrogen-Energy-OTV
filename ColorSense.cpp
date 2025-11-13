@@ -2,19 +2,21 @@
 
 
 ColorSense::ColorSense(){
-  this->tcs = Adafruit_TCS34725();
+  this->r = 0;
+  this->g = 0;
+  this->b = 0;
+  this->c = 0;
+  this->isConnected = false;
+  this->tcs = NULL;
 }
 void ColorSense::start(){
-    this->r = 0;
-    this->g = 0;
-    this->b = 0;
-    this->c = 0;
+  this->tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X);
   if (this->tcs.begin()) {
-    Serial.println("[ColorSense] Found sensor"); // Ready to get readings
     this->isConnected = true;
+    Serial.println("[ColorSense] Found sensor"); // Ready to get readings
   } else {
-    Serial.println("[ColorSense] No TCS34725 found ... check your connections");
     this->isConnected = false;
+    Serial.println("[ColorSense] No TCS34725 found ... check your connections");
   }
 }
 
@@ -50,6 +52,27 @@ void ColorSense::sample(){
   this->b = (int)b_sum / num_samples;
   this->c = (int)c_sum / num_samples;
   
+}
+
+String ColorSense::color(){
+  // ColorSense::sample();
+  if(!isConnected){
+    Serial.println("[ColorSense] No TCS34725 connected");
+    return "N/A";
+  }
+  
+  int threshold = 150;
+  if (this->r > this->g && this->r > this->b) {
+    if (this->g > this->b && this->r - this->g < 50) return "yellow"; // Red + green ≈ yellow
+    return "red";
+  } else if (this->g > this->r && this->g > this->b) {
+    return "green";
+  } else if (this->b > this->r && this->b > this->g) {
+    return "blue";
+  } else if (this->r > threshold && this->g > threshold && this->b > threshold) {
+    return "white";
+  }
+  return "none";
 }
 
 void ColorSense::printData(){
